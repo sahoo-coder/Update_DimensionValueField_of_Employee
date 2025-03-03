@@ -27,4 +27,16 @@ codeunit 50540 updateDimensionByCodeunit
             end;
         end;
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Default Dimension", OnAfterDeleteEvent, '', false, false)]
+    local procedure deleteFieldOfEmployee(var Rec: Record "Default Dimension")
+    var
+        employeerecord: Record Employee;
+    begin
+        if (employeerecord.Get(Rec."No.")) then begin
+            employeerecord.dimension_value := '';
+            Message('Dimension Field removed in Employee Page.🥶');
+            employeerecord.Modify();
+        end;
+    end;
 }
